@@ -3,6 +3,10 @@ package at.maintenanceMonitor;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 
 @Path("/api/maintenanceMode")
@@ -10,7 +14,19 @@ public class MonitorController {
     public static final String INITIAL_MESSAGE = "-";
     public static String message = INITIAL_MESSAGE;
 
-
+    @GET
+    @Produces(MediaType.TEXT_HTML)
+    @Path("/frontend")
+    public static String loadWebsite() {
+        try {
+            File file = new File("HTML/index.html");
+            String content = Files.readString(Paths.get("HTML/index.html"));
+            return content;
+        } catch (IOException e) {
+            e.printStackTrace();
+            return "index.html kann ich gefunden werden";
+        }
+    }
 
     @GET
     @Produces(MediaType.TEXT_HTML)

@@ -43,7 +43,38 @@
         integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
         crossorigin="anonymous"></script>
 
+<script>
+    var containerControl = document.getElementById('container');
+    var messageControl = document.getElementById('message');
+    var updateControl = document.getElementById('updated');
 
+    function checkState() {
+        // https://developer.mozilla.org/en-US/docs/Learn/JavaScript/Client-side_web_APIs/Fetching_data
+        // https://developer.mozilla.org/en-US/docs/Web/API/Fetch_API/Using_Fetch
+        fetch('http://localhost:8080/api/maintenanceMode').then(response => {
+            response.text().then(text => {
+
+                // https://cssgradient.io/
+                if(text == '-') {
+                    messageControl.innerText = "";
+                    containerControl.style.background = 'linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(  9,245, 68, 0.5) 50%, rgba(255,255,255,1) 100%)';
+                } else {
+                    messageControl.innerText = text;
+                    containerControl.style.background = 'linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(245,  9,  9, 0.5) 50%, rgba(255,255,255,1) 100%)';
+                }
+
+            });
+            updateControl.innerText = 'last update: ' + (new Date()).toLocaleTimeString()
+        }).catch((reason)=> {
+            messageControl.innerText = "error occured";
+            containerControl.style.background = 'linear-gradient(90deg, rgba(255,255,255,1) 0%, rgba(245,  9,  9, 0.5) 50%, rgba(255,255,255,1) 100%)';
+            updateControl.innerText = 'last update: ' + (new Date()).toLocaleTimeString()
+        });
+    };
+
+    checkState();
+    setInterval(checkState, 5000);
+</script>
 </body>
 
 </html>
